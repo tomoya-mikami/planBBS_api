@@ -4,7 +4,7 @@ docker-build:
 
 .PHONY: run
 run:
-	docker run -d -p 8080:8080 -v $(PWD):/workdir --name api --rm plan-bbs-api
+	docker run -p 8080:8080 -p 8812:8812 -v $(PWD):/workdir --name api --rm plan-bbs-api
 
 .PHONY: stop
 stop:
