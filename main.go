@@ -67,7 +67,8 @@ func addPlanHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case http.MethodGet:
-		var plans []Plan
+		plans := make([]Plan, 0)
+
 		iter := client.Collection("Plans").Documents(ctx)
 		for {
 			doc, err := iter.Next()
