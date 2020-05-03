@@ -9,3 +9,7 @@ run:
 .PHONY: stop
 stop:
 	docker stop api
+
+.PHONY: firestore-start
+firestore-start:
+	gcloud beta emulators firestore start --host-port=localhost:8812
