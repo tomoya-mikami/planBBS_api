@@ -13,3 +13,7 @@ stop:
 .PHONY: firestore-start
 firestore-start:
 	gcloud beta emulators firestore start --host-port=localhost:8812
+
+.PHONY: deploy
+deploy:
+	gcloud app deploy
