@@ -22,7 +22,7 @@ func (s Service) Add() error {
 	}
 	plan := Plan{Title: "旅行プラン", Description: "赤坂の旅行プランです", Events: &events}
 
-	return s.repository.Add(plan)
+	return s.repository.Add(&plan)
 }
 
 func (s Service) FindAll() ([]Plan, error) {
