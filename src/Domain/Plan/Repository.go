@@ -8,8 +8,15 @@ import (
 )
 
 type Repository struct {
-	cleint firestore.Client
+	cleint *firestore.Client
 	ctx context.Context
+}
+
+func NewRepository(client *firestore.Client, ctx context.Context) *Repository {
+	repository := new(Repository)
+	repository.cleint = client
+	repository.ctx = ctx
+	return repository
 }
 
 func (r Repository) Add(plan Plan) error {
