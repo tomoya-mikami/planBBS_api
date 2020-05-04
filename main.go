@@ -40,7 +40,7 @@ func main() {
 	// 本当はここをDIコンテナでやりたい
 	planRepository := Plan.NewRepository(client, ctx)
 	planService := Plan.NewService(planRepository)
-	planHandler := Handler.NewPlanHadler(planService)
+	planHandler := Handler.NewPlanHandler(planService)
 
 	app := fiber.New()
 

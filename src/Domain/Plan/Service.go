@@ -1,5 +1,10 @@
 package Plan
 
+type ServiceInterface interface {
+	Add() error
+	FindAll() ([]Plan, error)
+}
+
 type Service struct {
 	repository RepositoryInterface
 }

@@ -7,21 +7,26 @@ import (
 	"google.golang.org/api/iterator"
 )
 
+type RepositoryInterface interface {
+	Add(plan Plan) error
+	FindAll() ([]Plan, error)
+}
+
 type Repository struct {
-	cleint *firestore.Client
+	client *firestore.Client
 	ctx context.Context
 }
 
 func NewRepository(client *firestore.Client, ctx context.Context) *Repository {
 	repository := new(Repository)
-	repository.cleint = client
+	repository.client = client
 	repository.ctx = ctx
 	return repository
 }
 
-func (r Repository) Add(plan Plan) error {
+func (r Repository) Add(plan *Plan) error {
 	var err error
-	_, _, err = r.cleint.Collection("Plans").Add(r.ctx, plan)
+	_, _, err = r.client.Collection("Plans").Add(r.ctx, plan)
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -33,7 +38,7 @@ func (r Repository) Add(plan Plan) error {
 func (r Repository) FindAll() ([]Plan, error) {
 	var err error
 	plans := make([]Plan, 0)
-	iter :=  r.cleint.Collection("Plans").Documents(r.ctx)
+	iter :=  r.client.Collection("Plans").Documents(r.ctx)
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
