@@ -37,6 +37,7 @@ func main() {
 	}
 	defer client.Close()
 
+	// 本当はここをDIコンテナでやりたい
 	planRepository := Plan.NewRepository(client, ctx)
 	planService := Plan.NewService(planRepository)
 	planHandler := Handler.NewPlanHadler(planService)
