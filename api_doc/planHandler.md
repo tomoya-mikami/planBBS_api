@@ -1,7 +1,7 @@
 # Plan API
 
 使用する構造体
-* [Plan](../struct/plan.md)
+* [Plan](./struct/plan.md)
 
 ## プランを全取得
 
