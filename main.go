@@ -21,12 +21,13 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 
-	"github.com/gofiber/fiber"
 	"cloud.google.com/go/firestore"
 
 	"local.packages/handler"
 	"local.packages/plan"
+	"local.packages/src"
 )
 
 func main() {
@@ -42,17 +43,10 @@ func main() {
 	planService := Plan.NewService(planRepository)
 	planHandler := Handler.NewPlanHandler(planService)
 
-	app := fiber.New()
+	server := src.NewServer(planHandler)
 
-	app.Get("/", func(c *fiber.Ctx) {
-		c.Send("Hello, World!")
-	})
-
-	app.Get("/plan", planHandler.PlanList)
-	app.Post("/plan", planHandler.PlanAdd)
-
-	err = app.Listen(8080)
+	err = server.Start()
 	if err != nil {
-		log.Fatalln(err)
+		os.Exit(-1)
 	}
 }

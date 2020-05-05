@@ -6,6 +6,8 @@ replace local.packages/plan => ./src/Domain/Plan
 
 replace local.packages/handler => ./src/Handler
 
+replace local.packages/src => ./src
+
 require (
 	cloud.google.com/go/firestore v1.2.0
 	github.com/gofiber/fiber v1.9.3
@@ -18,4 +20,5 @@ require (
 	google.golang.org/api v0.22.0
 	local.packages/handler v0.0.0-00010101000000-000000000000
 	local.packages/plan v0.0.0-00010101000000-000000000000
+	local.packages/src v0.0.0-00010101000000-000000000000
 )
