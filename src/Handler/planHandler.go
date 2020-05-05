@@ -2,9 +2,10 @@ package Handler
 
 import (
 	"encoding/json"
+
 	"github.com/gofiber/fiber"
 
-	"local.packages/plan"
+	Plan "local.packages/plan"
 )
 
 type PlanHandler struct {
@@ -12,7 +13,7 @@ type PlanHandler struct {
 }
 
 func NewPlanHandler(planService Plan.ServiceInterface) *PlanHandler {
-	handler := new (PlanHandler)
+	handler := new(PlanHandler)
 	handler.planService = planService
 	return handler
 }
@@ -27,6 +28,14 @@ func (h PlanHandler) PlanList(c *fiber.Ctx) {
 }
 
 func (h PlanHandler) PlanAdd(c *fiber.Ctx) {
-	h.planService.Add()
+	var plan Plan.Plan
+	json.Unmarshal([]byte(c.Body()), &plan)
+
+	err := h.planService.Add(plan)
+	if err != nil {
+		c.Status(500).Send(err)
+		return
+	}
+
 	c.Send("{}")
 }
