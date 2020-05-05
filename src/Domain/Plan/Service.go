@@ -9,7 +9,7 @@ type Service struct {
 	repository RepositoryInterface
 }
 
-func NewService (repository RepositoryInterface) *Service {
+func NewService (repository RepositoryInterface) ServiceInterface {
 	service := new(Service)
 	service.repository = repository
 	return service

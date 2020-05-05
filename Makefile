@@ -12,7 +12,7 @@ stop:
 
 .PHONY: run
 run:
-	FIRESTORE_EMULATOR_HOST=localhost:8812 go run main.go
+	FIRESTORE_EMULATOR_HOST=localhost:8812 go run main.go wire_gen.go
 
 .PHONY: firestore-start
 firestore-start:
@@ -21,3 +21,7 @@ firestore-start:
 .PHONY: deploy
 deploy:
 	gcloud app deploy
+
+.PHONY: run-wire
+run-wire:
+	$(GOPATH)/bin/wire
