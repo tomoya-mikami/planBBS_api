@@ -3,9 +3,10 @@ package src
 import (
 	"log"
 
+	"github.com/gofiber/cors"
 	"github.com/gofiber/fiber"
 
-	"local.packages/handler"
+	Handler "local.packages/handler"
 )
 
 type Server struct {
@@ -21,6 +22,8 @@ func NewServer(planHandler *Handler.PlanHandler) *Server {
 
 func (s Server) Start() error {
 	app := fiber.New()
+
+	app.Use(cors.New())
 
 	app.Get("/", func(c *fiber.Ctx) {
 		c.Send("Hello, World!")

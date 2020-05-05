@@ -1,8 +1,9 @@
 package main
 
 import (
-	"log"
 	"context"
+	"log"
+
 	"cloud.google.com/go/firestore"
 )
 
