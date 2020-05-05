@@ -10,7 +10,6 @@ replace local.packages/src => ./src
 
 require (
 	cloud.google.com/go/firestore v1.2.0
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gofiber/cors v0.0.3 // indirect
 	github.com/google/wire v0.4.0
 	github.com/klauspost/compress v1.10.5 // indirect
