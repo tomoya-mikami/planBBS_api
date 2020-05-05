@@ -17,7 +17,7 @@ type Repository struct {
 	ctx context.Context
 }
 
-func NewRepository(client *firestore.Client, ctx context.Context) *Repository {
+func NewRepository(client *firestore.Client, ctx context.Context) RepositoryInterface {
 	repository := new(Repository)
 	repository.client = client
 	repository.ctx = ctx
