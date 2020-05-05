@@ -20,32 +20,16 @@ package main
 // [START import]
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"log"
-	"net/http"
-	"os"
 
+	"github.com/gofiber/fiber"
 	"cloud.google.com/go/firestore"
-	"google.golang.org/api/iterator"
+
+	"local.packages/handler"
+	"local.packages/plan"
 )
 
-// [END import]
-
-type Event struct {
-	Title       string `firestore:"title"`
-	Description string `firestore:"description"`
-	URL         string `firestore:"url"`
-	Date        int64  `firestore:"date"`
-}
-
-type Plan struct {
-	Title       string `firestore:"title"`
-	Description string `firestore:"description"`
-	Events      *[]Event
-}
-
-func addPlanHandler(w http.ResponseWriter, r *http.Request) {
+func main() {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "planbbs")
 	if err != nil {
@@ -53,79 +37,22 @@ func addPlanHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer client.Close()
 
-	switch r.Method {
-	case http.MethodPost:
-		events := []Event{
-			{Title: "空港", Description: "羽田空港にむかいます", URL: "https://tokyo-haneda.com/index.html", Date: 1588491615665},
-			{Title: "ねこ", Description: "ねこです", URL: "", Date: 1588491620000},
-		}
-		plan := Plan{Title: "旅行プラン", Description: "赤坂の旅行プランです", Events: &events}
+	// 本当はここをDIコンテナでやりたい
+	planRepository := Plan.NewRepository(client, ctx)
+	planService := Plan.NewService(planRepository)
+	planHandler := Handler.NewPlanHandler(planService)
 
-		_, _, err = client.Collection("Plans").Add(ctx, plan)
-		if err != nil {
-			log.Printf("データ書き込みエラー　Error:%T message: %v", err, err)
-			return
-		}
-	case http.MethodGet:
-		plans := make([]Plan, 0)
+	app := fiber.New()
 
-		iter := client.Collection("Plans").Documents(ctx)
-		for {
-			doc, err := iter.Next()
-			if err == iterator.Done {
-				break
-			}
-			if err != nil {
-				log.Fatal(err)
-			}
+	app.Get("/", func(c *fiber.Ctx) {
+		c.Send("Hello, World!")
+	})
 
-			var plan Plan
-			doc.DataTo(&plan)
-			plans = append(plans, plan)
-		}
+	app.Get("/plan", planHandler.PlanList)
+	app.Post("/plan", planHandler.PlanAdd)
 
-		res, _ := json.Marshal(plans)
-
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(res)
-	default:
-		http.NotFound(w, r)
-		return
+	err = app.Listen(8080)
+	if err != nil {
+		log.Fatalln(err)
 	}
 }
-
-// [START main_func]
-
-func main() {
-	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/plan", addPlanHandler)
-
-	// [START setting_port]
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-		log.Printf("Defaulting to port %s", port)
-	}
-
-	log.Printf("Listening on port %s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		log.Fatal(err)
-	}
-	// [END setting_port]
-}
-
-// [END main_func]
-
-// [START indexHandler]
-
-// indexHandler responds to requests with our greeting.
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
-	fmt.Fprint(w, "Hello, World!")
-}
-
-// [END indexHandler]
-// [END gae_go111_app]
