@@ -18,8 +18,10 @@ func NewPlanHandler(planService Plan.ServiceInterface) *PlanHandler {
 }
 
 func (h PlanHandler) PlanList(c *fiber.Ctx) {
+	responseTable := make(map[string][]Plan.Plan)
 	plans, _ := h.planService.FindAll()
-	res, _ := json.Marshal(plans)
+	responseTable["Plan"] = plans
+	res, _ := json.Marshal(responseTable)
 
 	c.Send(res)
 }
