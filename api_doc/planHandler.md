@@ -50,15 +50,15 @@
 
 ### Path
 
-`/plan/:id`
+`/plan`
 
 ### Method
 
 `GET`
 
-### Request Body
+### Query Parameter
 
-なし
+- id string
 
 ### Response Body
 

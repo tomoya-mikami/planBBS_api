@@ -27,6 +27,20 @@ func (h PlanHandler) PlanList(c *fiber.Ctx) {
 	c.Send(res)
 }
 
+func (h PlanHandler) PlanShow(c *fiber.Ctx) {
+	var id string
+	var plans []Plan.Plan
+
+	id = c.Query("id")
+
+	responseTable := make(map[string][]Plan.Plan)
+	plan, _ := h.planService.Find(id)
+	responseTable["Plan"] = append(plans, plan)
+	res, _ := json.Marshal(responseTable)
+
+	c.Send(res)
+}
+
 func (h PlanHandler) PlanAdd(c *fiber.Ctx) {
 	var plan Plan.Plan
 	json.Unmarshal([]byte(c.Body()), &plan)

@@ -11,6 +11,7 @@ import (
 type RepositoryInterface interface {
 	Add(plan *Plan) error
 	FindAll() ([]Plan, error)
+	Find(id string) (Plan, error)
 }
 
 type Repository struct {
@@ -57,4 +58,16 @@ func (r Repository) FindAll() ([]Plan, error) {
 	}
 
 	return plans, err
+}
+
+func (r Repository) Find(id string) (Plan, error) {
+	dsnap, err := r.client.Collection("Plans").Doc(id).Get(r.ctx)
+	if err != nil {
+		log.Fatal(err)
+		return Plan{}, err
+	}
+
+	var plan Plan
+	dsnap.DataTo(&plan)
+	return plan, err
 }

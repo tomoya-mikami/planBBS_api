@@ -3,6 +3,7 @@ package Plan
 type ServiceInterface interface {
 	Add(plan Plan) error
 	FindAll() ([]Plan, error)
+	Find(id string) (Plan, error)
 }
 
 type Service struct {
@@ -21,4 +22,8 @@ func (s Service) Add(plan Plan) error {
 
 func (s Service) FindAll() ([]Plan, error) {
 	return s.repository.FindAll()
+}
+
+func (s Service) Find(id string) (Plan, error) {
+	return s.repository.Find(id)
 }
