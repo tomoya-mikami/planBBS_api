@@ -29,7 +29,8 @@ func (s Server) Start() error {
 		c.Send("Hello, World!")
 	})
 
-	app.Get("/plan", s.planHandler.PlanList)
+	app.Get("/plans", s.planHandler.PlanList)
+	app.Get("/plan", s.planHandler.PlanShow)
 	app.Post("/plan", s.planHandler.PlanAdd)
 
 	err := app.Listen(8080)

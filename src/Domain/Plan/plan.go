@@ -8,6 +8,7 @@ type Event struct {
 }
 
 type Plan struct {
+	ID          string
 	Title       string `firestore:"title"`
 	Description string `firestore:"description"`
 	Events      *[]Event
