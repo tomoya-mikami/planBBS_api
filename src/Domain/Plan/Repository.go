@@ -63,7 +63,7 @@ func (r Repository) FindAll() ([]Plan, error) {
 func (r Repository) Find(id string) (Plan, error) {
 	dsnap, err := r.client.Collection("Plans").Doc(id).Get(r.ctx)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return Plan{}, err
 	}
 

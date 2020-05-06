@@ -34,7 +34,12 @@ func (h PlanHandler) PlanShow(c *fiber.Ctx) {
 	id = c.Query("id")
 
 	responseTable := make(map[string][]Plan.Plan)
-	plan, _ := h.planService.Find(id)
+	plan, err := h.planService.Find(id)
+	if err != nil {
+		c.Status(404).Send(err)
+		return
+	}
+
 	responseTable["Plan"] = append(plans, plan)
 	res, _ := json.Marshal(responseTable)
 
